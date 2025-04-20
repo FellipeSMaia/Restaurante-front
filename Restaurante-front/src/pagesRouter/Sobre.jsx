@@ -1,0 +1,5 @@
+function Sobre() {
+  return <h1>Pagina home</h1>;
+}
+
+export default Sobre;
