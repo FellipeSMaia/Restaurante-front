@@ -8,6 +8,13 @@ import {
   Navigate,
 } from "react-router-dom";
 
+// Import de routas
+import Sobre from "./pagesRouter/Sobre.jsx";
+import Servico from "./pagesRouter/Servico.jsx";
+import Menu from "./pagesRouter/Menu.jsx";
+import Contato from "./pagesRouter/Contato.jsx";
+import Entrar from "./pagesRouter/Entrar.jsx";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -16,6 +23,26 @@ const router = createBrowserRouter([
   {
     path: "/home",
     element: <Navigate to="/" replace />,
+  },
+  {
+    path: "/sobre",
+    element: <Sobre />,
+  },
+  {
+    path: "/servico",
+    element: <Servico />,
+  },
+  {
+    path: "/Menu",
+    element: <Menu />,
+  },
+  {
+    path: "/Contato",
+    element: <Contato />,
+  },
+  {
+    path: "/Entrar",
+    element: <Entrar />,
   },
 ]);
 

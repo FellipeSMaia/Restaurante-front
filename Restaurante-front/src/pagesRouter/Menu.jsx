@@ -1,5 +1,5 @@
 function Menu() {
-  return <h1>Pagina home</h1>;
+  return <h1>Pagina menu</h1>;
 }
 
 export default Menu;

@@ -1,8 +1,7 @@
-
 // import de rotas
 import Home from "./pagesRouter/Home";
 import Sobre from "./pagesRouter/Sobre";
-import Servico from "./pagesRouter/Servicos";
+import Servico from "./pagesRouter/Servico";
 import Menu from "./pagesRouter/Menu";
 import Contato from "./pagesRouter/Contato";
 import Entrar from "./pagesRouter/Entrar";
