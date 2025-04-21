@@ -15,7 +15,7 @@ import { Routes, Route } from "react-router-dom";
 
 function App() {
   return (
-    <div className="w-screen h-screen bg-slate-200 flex flex-col">
+    <div className="w-screen h-screen bg-[#d3d3d3] flex flex-col">
       <Header>
         <Navbar />
       </Header>

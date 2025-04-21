@@ -16,7 +16,7 @@ function Navbar() {
       >
         {isMenuOpen ? "✕" : "☰"}
       </button>
-      <ul className="hidden md:flex space-x-6 font-medium text-gray-700">
+      <ul className="hidden md:flex space-x-6 font-bold text-gray-800">
         <li>
           <Link to="/">Home</Link>
         </li>
