@@ -8,7 +8,7 @@ import {
   Navigate,
 } from "react-router-dom";
 
-// Import de routas
+// Import de rotas
 import Sobre from "./pagesRouter/Sobre.jsx";
 import Servico from "./pagesRouter/Servico.jsx";
 import Menu from "./pagesRouter/Menu.jsx";
