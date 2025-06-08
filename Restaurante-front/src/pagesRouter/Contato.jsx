@@ -1,31 +1,16 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
-import { ChevronLeftIcon } from "lucide-react";
 
 function Contato() {
-  const navigate = useNavigate();
-
-  const voltarParaHome = () => {
-    navigate("/");
-  };
-
   return (
-    <div className="flex flex-col min-h-screen bg-[#d3d3d3] relative">
-      <button
-        className="absolute top-4 left-4 bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600"
-        onClick={voltarParaHome}
-      >
-        <ChevronLeftIcon />
-      </button>
-
-      {/* Conteúdo principal */}
-      <div className="flex flex-1 items-center justify-center gap-8 px-4 mt-20">
-        <div className="w-[500px]">
-          <h1 className="text-orange-600 text-2xl">App</h1>
-          <h2 className="text-2xl font-bold text-gray-800">
+    <div className="flex flex-col min-h-screen bg-[#d3d3d3] px-4 py-10">
+      {/* Conteúdo principal: crescer para ocupar o espaço */}
+      <div className="flex flex-col md:flex-row items-center justify-center gap-10 max-w-7xl mx-auto w-full flex-grow">
+        <div className="max-w-md text-center md:text-left">
+          <h1 className="text-orange-600 text-3xl mb-2">App</h1>
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">
             O Aplicativo estará disponível em Breve
           </h2>
-          <p className="text-gray-700 mt-2">
+          <p className="text-gray-700">
             Lorem ipsum dolor sit, amet consectetur adipisicing elit. Harum
             doloribus laborum ad molestiae ratione aliquam earum. Inventore quae
             excepturi quidem id consectetur corporis culpa perferendis veniam?
@@ -36,26 +21,24 @@ function Contato() {
         <img
           src="/imagens/img_contato/foto-celular.png"
           alt="Foto para Page Contato"
-          className="w-[200px] h-auto"
+          className="w-48 md:w-64 h-auto"
         />
       </div>
 
-      {/* Footer - Contatos */}
-      <footer className=" bg-black  text-white py-2 mt-10">
-        <div className="max-w-4xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-3">
-          {/* Endereço */}
+      {/* Footer: fixo no final */}
+      <footer className="bg-black text-white py-6 mt-10">
+        <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <div>
-            <h3 className="font-semibold text-lg mb-1">Endereço</h3>
-            <p className="text-gray-100">
+            <h3 className="font-semibold text-lg mb-2">Endereço</h3>
+            <p className="text-gray-300">
               Rua das Flores, 123 - Centro
               <br />
               São Paulo - SP, 01000-000
             </p>
           </div>
 
-          {/* Telefone */}
           <div>
-            <h3 className="font-semibold text-lg mb-1">Telefone</h3>
+            <h3 className="font-semibold text-lg mb-2">Telefone</h3>
             <p className="text-gray-300">
               (11) 98765-4321
               <br />
@@ -63,16 +46,14 @@ function Contato() {
             </p>
           </div>
 
-          {/* E-mail */}
           <div>
-            <h3 className="font-semibold text-lg mb-1">E-mail</h3>
+            <h3 className="font-semibold text-lg mb-2">E-mail</h3>
             <p className="text-gray-300">contato@exemplo.com</p>
           </div>
 
-          {/* Redes Sociais */}
           <div>
-            <h3 className="font-semibold text-lg mb-1">Redes Sociais</h3>
-            <ul className="space-y-1">
+            <h3 className="font-semibold text-lg mb-2">Redes Sociais</h3>
+            <ul className="space-y-2">
               <li>
                 <a
                   href="https://www.instagram.com"

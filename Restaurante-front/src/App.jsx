@@ -1,33 +1,17 @@
-// import de rotas
-import Home from "./pagesRouter/Home";
-import Sobre from "./pagesRouter/Sobre";
-import Servico from "./pagesRouter/Servico";
-import Menu from "./pagesRouter/Menu";
-import Contato from "./pagesRouter/Contato";
-import Entrar from "./pagesRouter/Entrar";
-
-// import de componentes
 import Header from "./components/header/Header";
 import Navbar from "./components/navbar/Navbar";
 import Container from "./components/container/Container";
 import Footer from "./components/footer/Footer";
-import { Routes, Route } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 
 function App() {
   return (
-    <div className="w-screen h-screen bg-[#d3d3d3] flex flex-col">
+    <div className="w-screen min-h-screen bg-[#d3d3d3] flex flex-col">
       <Header>
         <Navbar />
       </Header>
       <Container>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/sobre" element={<Sobre />} />
-          <Route path="/servico" element={<Servico />} />
-          <Route path="/menu" element={<Menu />} />
-          <Route path="/contato" element={<Contato />} />
-          <Route path="/entrar" element={<Entrar />} />
-        </Routes>
+        <Outlet />
       </Container>
       <Footer />
     </div>
