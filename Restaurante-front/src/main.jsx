@@ -10,12 +10,12 @@ import {
 import App from "./App.jsx";
 
 // Páginas (rotas)
-import Home from "./pagesRouter/Home.jsx";
-import Sobre from "./pagesRouter/Sobre.jsx";
-import Servico from "./pagesRouter/Servico.jsx";
-import Menu from "./pagesRouter/Menu.jsx";
-import Contato from "./pagesRouter/Contato.jsx";
-import Entrar from "./pagesRouter/Entrar.jsx";
+import Home from "./pages/Home.jsx";
+import Sobre from "./pages/Sobre.jsx";
+import Servico from "./pages/Servico.jsx";
+import Menu from "./pages/Menu.jsx";
+import Contato from "./pages/Contato.jsx";
+import Entrar from "./pages/Entrar.jsx";
 
 const router = createBrowserRouter([
   {
@@ -25,8 +25,8 @@ const router = createBrowserRouter([
       { path: "/", element: <Home /> },
       { path: "/home", element: <Navigate to="/" replace /> },
       { path: "/sobre", element: <Sobre /> },
-      { path: "/servico", element: <Servico /> },
       { path: "/menu", element: <Menu /> },
+      { path: "/servico", element: <Servico /> },
       { path: "/contato", element: <Contato /> },
       { path: "/entrar", element: <Entrar /> },
     ],
