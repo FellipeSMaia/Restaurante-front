@@ -1,85 +1,123 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { User, LogOut, Menu, X } from "lucide-react";
+import LoginButton from "../LoginButton";
+import { useAuth } from "../../contexts/AuthContext";
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { isAuthenticated, logout } = useAuth();
+
+  const toggleMenu = () => setIsMenuOpen((prev) => !prev);
+  const closeMenu = () => setIsMenuOpen(false);
 
   return (
-    <nav className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-      {/* Título clicável */}
-      <div className="text-1xl font-bold text-gray-800">
+    <nav className="max-w-7xl mx-auto px-4 py-4">
+      <div className="flex items-center justify-between">
         <Link
           to="/"
-          className="hover:text-orange-600 transition-colors duration-200"
+          onClick={closeMenu}
+          className="font-bold text-gray-800 hover:text-orange-600"
         >
-          <h1>Restaurante X</h1>
+          Restaurante X
         </Link>
-      </div>
 
-      {/* Botão do menu mobile */}
-      <button
-        className="md:hidden text-2xl text-gray-800"
-        onClick={() => setIsMenuOpen(!isMenuOpen)}
-      >
-        {isMenuOpen ? "✕" : "☰"}
-      </button>
+        <button
+          onClick={toggleMenu}
+          className="md:hidden text-2xl p-2 rounded-md"
+        >
+          {isMenuOpen ? <X /> : <Menu />}
+        </button>
 
-      {/* Menu desktop */}
-      <ul className="hidden md:flex space-x-6 font-bold text-gray-800">
-        <li>
-          <Link to="/">Home</Link>
-        </li>
-        <li>
-          <Link to="/sobre">Sobre</Link>
-        </li>
-        <li>
-          <Link to="/menu">Menu</Link>
-        </li>
-        <li>
-          <Link to="/servico">Serviços</Link>
-        </li>
-        <li>
-          <Link to="/contato">Contato</Link>
-        </li>
-        <li>
-          <Link to="/entrar">Entrar</Link>
-        </li>
-      </ul>
+        <ul className="hidden md:flex space-x-6 items-center">
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/sobre">Sobre</Link>
+          </li>
+          <li>
+            <Link to="/menu">Menu</Link>
+          </li>
+          <li>
+            <Link to="/servico">Serviços</Link>
+          </li>
+          <li>
+            <Link to="/contato">Contato</Link>
+          </li>
 
-      {/* Menu mobile */}
-      {isMenuOpen && (
-        <ul className="absolute top-16 left-0 w-full bg-[#d3d3d3] flex flex-col items-start p-4 shadow-md md:hidden z-10 space-y-2">
           <li>
-            <Link to="/" onClick={() => setIsMenuOpen(false)}>
-              Home
-            </Link>
-          </li>
-          <li>
-            <Link to="/sobre" onClick={() => setIsMenuOpen(false)}>
-              Sobre
-            </Link>
-          </li>
-          <li>
-            <Link to="/servico" onClick={() => setIsMenuOpen(false)}>
-              Serviços
-            </Link>
-          </li>
-          <li>
-            <Link to="/menu" onClick={() => setIsMenuOpen(false)}>
-              Menu
-            </Link>
-          </li>
-          <li>
-            <Link to="/contato" onClick={() => setIsMenuOpen(false)}>
-              Contato
-            </Link>
-          </li>
-          <li>
-            <Link to="/entrar" onClick={() => setIsMenuOpen(false)}>
-              Entrar
-            </Link>
+            {isAuthenticated ? (
+              <button
+                onClick={logout}
+                className="flex items-center text-red-600 hover:text-red-800"
+              >
+                <LogOut size={18} />
+                <span className="ml-1">Sair</span>
+              </button>
+            ) : (
+              <LoginButton loginPath="/login">
+                <User size={18} />
+              </LoginButton>
+            )}
           </li>
         </ul>
+      </div>
+
+      {isMenuOpen && (
+        <div className="md:hidden mt-4 bg-gray-200 rounded-lg p-4">
+          <ul className="flex flex-col space-y-2">
+            <li>
+              <Link to="/" onClick={closeMenu}>
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link to="/sobre" onClick={closeMenu}>
+                Sobre
+              </Link>
+            </li>
+            <li>
+              <Link to="/menu" onClick={closeMenu}>
+                Menu
+              </Link>
+            </li>
+            <li>
+              <Link to="/servico" onClick={closeMenu}>
+                Serviços
+              </Link>
+            </li>
+            <li>
+              <Link to="/contato" onClick={closeMenu}>
+                Contato
+              </Link>
+            </li>
+
+            <li>
+              {isAuthenticated ? (
+                <button
+                  onClick={() => {
+                    logout();
+                    closeMenu();
+                  }}
+                  className="flex items-center text-red-600 hover:text-red-800"
+                >
+                  <LogOut size={18} />
+                  <span className="ml-1">Sair</span>
+                </button>
+              ) : (
+                <Link
+                  to="/"
+                  onClick={closeMenu}
+                  className="flex items-center text-black hover:text-gray-600"
+                >
+                  <User size={18} />
+                  <span className="ml-1">Entrar</span>
+                </Link>
+              )}
+            </li>
+          </ul>
+        </div>
       )}
     </nav>
   );
