@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import { User, LogOut, Menu, X } from "lucide-react";
+import { User, LogOut, Menu, X, Settings } from "lucide-react";
 import LoginButton from "../LoginButton";
 import { useAuth } from "../../contexts/AuthContext";
 
@@ -12,12 +12,12 @@ function Navbar() {
   const closeMenu = () => setIsMenuOpen(false);
 
   return (
-    <nav className="max-w-7xl mx-auto px-4 py-4">
+    <nav className="w-full px-4 py-4">
       <div className="flex items-center justify-between">
         <Link
           to="/"
           onClick={closeMenu}
-          className="font-bold text-gray-800 hover:text-orange-600"
+          className="font-bold text-gray-800 hover:text-orange-600 ml-8"
         >
           Restaurante X
         </Link>
@@ -45,6 +45,18 @@ function Navbar() {
           <li>
             <Link to="/contato">Contato</Link>
           </li>
+
+          {isAuthenticated && (
+            <li>
+              <Link
+                to="/perfil"
+                className="flex items-center text-blue-600 hover:text-blue-800"
+              >
+                <Settings size={18} />
+                <span className="ml-1">Perfil</span>
+              </Link>
+            </li>
+          )}
 
           <li>
             {isAuthenticated ? (
@@ -92,6 +104,19 @@ function Navbar() {
                 Contato
               </Link>
             </li>
+
+            {isAuthenticated && (
+              <li>
+                <Link
+                  to="/perfil"
+                  onClick={closeMenu}
+                  className="flex items-center text-blue-600 hover:text-blue-800"
+                >
+                  <Settings size={18} />
+                  <span className="ml-1">Perfil</span>
+                </Link>
+              </li>
+            )}
 
             <li>
               {isAuthenticated ? (

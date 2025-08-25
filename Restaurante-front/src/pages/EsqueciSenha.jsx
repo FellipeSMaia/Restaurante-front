@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import { Mail, ArrowLeft, AlertCircle, CheckCircle, Send } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import Layout from "../components/layout/layout";
 import api from "../services/api";
 import SuccessMessage from "../components/SucessMessage/SucessMessage";
@@ -56,23 +55,26 @@ function EsqueciSenha() {
     } catch (error) {
       if (error.response) {
         const { status, data } = error.response;
-        if (status === 404)
+
+        if (status === 404) {
           setErrors({ email: "Este email não está cadastrado no sistema" });
-        else if (status === 429)
+        } else if (status === 429) {
           setErrors({
             general: "Muitas tentativas. Tente novamente em alguns minutos",
           });
-        else if (status === 500)
+        } else if (status === 500) {
           setErrors({
             general: "Erro interno do servidor. Tente novamente mais tarde",
           });
-        else if (data?.message)
+        } else if (data?.message) {
           setErrors(
             data.field
               ? { [data.field]: data.message }
               : { general: data.message }
           );
-        else setErrors({ general: "Erro ao enviar email de recuperação" });
+        } else {
+          setErrors({ general: "Erro ao enviar email de recuperação" });
+        }
       } else if (error.request) {
         setErrors({ general: "Erro de conexão. Verifique sua internet" });
       } else {

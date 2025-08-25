@@ -82,6 +82,7 @@ function Login() {
 
     try {
       const response = await api.post("/login", dataToSend);
+
       const userData = response.data.user;
       const finalToken = extractToken(response.data);
 
@@ -98,37 +99,69 @@ function Login() {
       const remember = Boolean(formData.rememberMe);
 
       authService.clearUserData();
-      await new Promise((resolve) => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
-      authService.setUser(userData, remember);
-      authService.setToken(finalToken, remember);
-      authService.setAdditionalData(userData.email, remember);
+      try {
+        authService.setUser(userData, remember);
+        authService.setToken(finalToken, remember);
+        authService.setAdditionalData(userData.email, remember);
 
-      api.defaults.headers.common["Authorization"] = `Bearer ${finalToken}`;
+        const expectedStorage = remember ? localStorage : sessionStorage;
+        const savedToken = expectedStorage.getItem("token");
+        const savedUser = expectedStorage.getItem("user");
+        const savedIsAuth = expectedStorage.getItem("isAuthenticated");
+
+        if (!savedToken || !savedUser || savedIsAuth !== "true") {
+          throw new Error("Dados não foram salvos corretamente nos storages");
+        }
+
+        api.defaults.headers.common["Authorization"] = `Bearer ${finalToken}`;
+      } catch {
+        setErrors({
+          general: "Erro ao salvar dados de login. Tente novamente.",
+        });
+        return;
+      }
+
+      const eventData = {
+        user: userData,
+        token: finalToken,
+        rememberMe: remember,
+      };
 
       window.dispatchEvent(
         new CustomEvent("userLoggedIn", {
-          detail: { user: userData, token: finalToken },
+          detail: eventData,
         })
       );
 
       setTimeout(() => {
-        window.dispatchEvent(new CustomEvent("authStateChanged"));
-      }, 50);
+        window.dispatchEvent(
+          new CustomEvent("authStateChanged", {
+            detail: eventData,
+          })
+        );
+      }, 100);
 
       if (window.opener) {
-        window.opener.postMessage(
-          {
-            type: "LOGIN_SUCCESS",
-            user: userData,
-            token: finalToken,
-            rememberMe: remember,
-          },
-          "*"
-        );
+        try {
+          window.opener.postMessage(
+            {
+              type: "LOGIN_SUCCESS",
+              user: userData,
+              token: finalToken,
+              rememberMe: remember,
+            },
+            window.location.origin
+          );
+        } catch {
+          setErrors({
+            general: "Erro ao comunicar login com a janela principal.",
+          });
+        }
       }
 
-      setTimeout(() => closePopup(), 150);
+      setTimeout(() => closePopup(), 300);
     } catch (error) {
       if (error.response?.data?.message) {
         setErrors({ general: error.response.data.message });

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { User, Settings, LogOut, LogIn } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import authService from "../services/authService";
 import LoginButton from "./LoginButton";
 
@@ -13,6 +14,7 @@ const AuthButtons = ({
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   const checkAuthState = () => {
     try {
@@ -56,7 +58,6 @@ const AuthButtons = ({
     window.addEventListener("userLoggedOut", handleAuthChange);
     window.addEventListener("authStateChanged", handleAuthChange);
     window.addEventListener("loginStateChanged", handleAuthChange);
-
     window.addEventListener("storage", handleStorageChange);
 
     return () => {
@@ -70,7 +71,6 @@ const AuthButtons = ({
 
   const handleLogout = async () => {
     try {
-
       authService.clearUserData();
 
       window.dispatchEvent(new CustomEvent("userLoggedOut"));
@@ -81,27 +81,25 @@ const AuthButtons = ({
 
       onLogout();
 
-      console.log(" Logout realizado com sucesso");
+      console.log("Logout realizado com sucesso");
 
-      if (window.location.pathname !== "/") {
-        window.location.href = "/";
-      }
+      navigate("/");
     } catch (error) {
-      console.error(" Erro durante logout:", error);
+      console.error("Erro durante logout:", error);
     }
   };
 
   const handleProfileEdit = () => {
-    window.open(profilePath, "_blank");
+    navigate(profilePath);
   };
 
   const handleLoginSuccess = (data) => {
-    console.log(" Login realizado via popup");
+    console.log("Login realizado via popup");
     checkAuthState();
   };
 
   const handleLoginError = (error) => {
-    console.error(" Erro no login via popup:", error);
+    console.error("Erro no login via popup:", error);
   };
 
   if (loading) {

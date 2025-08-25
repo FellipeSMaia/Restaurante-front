@@ -13,7 +13,7 @@ const FormInput = ({
   disabled,
   showToggle = false,
   autoComplete,
-  icon: IconComponent, // Recebe o componente do ícone como prop
+  icon: IconComponent, 
 }) => {
   const [showPassword, setShowPassword] = useState(false);
 

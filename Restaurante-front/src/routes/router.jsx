@@ -10,12 +10,23 @@ import Contato from "../pages/Contato.jsx";
 import Login from "../pages/Login.jsx";
 import Cadastro from "../pages/Cadastro.jsx";
 import EsqueciSenha from "../pages/EsqueciSenha.jsx";
+import PerfilEdit from "../pages/PerfilEdit.jsx"; 
 
 const PublicRoute = ({ children }) => {
   const isAuthenticated = authService.isAuthenticated();
 
   if (isAuthenticated) {
     return <Navigate to="/" replace />;
+  }
+
+  return children;
+};
+
+const PrivateRoute = ({ children }) => {
+  const isAuthenticated = authService.isAuthenticated();
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
   }
 
   return children;
@@ -74,6 +85,14 @@ const router = createBrowserRouter([
       <PublicRoute>
         <EsqueciSenha />
       </PublicRoute>
+    ),
+  },
+  {
+    path: "/perfil",
+    element: (
+      <PrivateRoute>
+        <PerfilEdit />
+      </PrivateRoute>
     ),
   },
   {

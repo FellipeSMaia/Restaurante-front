@@ -7,7 +7,7 @@ function Container({ children, className = "" }) {
         w-full 
         h-full
         flex-1 
-        bg-[#d3d3d3] 
+        bg-[#610600] 
         overflow-hidden
         ${className}
       `}

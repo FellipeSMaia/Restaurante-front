@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Mail, AlertCircle, Send, ArrowLeft } from "lucide-react";
+import { Mail, AlertCircle, Send } from "lucide-react";
 
 function ForgotPasswordForm({
   formData,

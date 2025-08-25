@@ -13,8 +13,7 @@ import { formatCPF, formatPhone } from "../utils/formatters";
 
 function Cadastro() {
   const navigate = useNavigate();
-  const { errors, setErrors, validateStep1, validateStep2 } =
-    useFormValidation();
+  const { errors, setErrors, validateStep1, validateStep2 } = useFormValidation();
   const { submitRegistration, isLoading } = useRegistration();
 
   const [formData, setFormData] = useState({
@@ -39,13 +38,11 @@ function Cadastro() {
   const [timeRemaining, setTimeRemaining] = useState(0);
   const [totalFailedAttempts, setTotalFailedAttempts] = useState(0);
   const [sessionStartTime] = useState(new Date().getTime());
-  const [lastActivityTime, setLastActivityTime] = useState(
-    new Date().getTime()
-  );
+  const [lastActivityTime, setLastActivityTime] = useState(new Date().getTime());
 
   const MAX_ATTEMPTS = 3;
-  const BLOCK_DURATION = 1800000; 
-  const PROGRESSIVE_BLOCK_MULTIPLIER = 2; 
+  const BLOCK_DURATION = 1800000;
+  const PROGRESSIVE_BLOCK_MULTIPLIER = 2;
 
   useEffect(() => {
     let interval;
@@ -78,7 +75,7 @@ function Cadastro() {
         setTokenError("");
         setAdminCode("");
       }
-    }, 60000); 
+    }, 60000);
 
     return () => {
       if (interval) clearInterval(interval);
@@ -102,7 +99,7 @@ function Cadastro() {
     return Math.min(
       baseTime * Math.pow(PROGRESSIVE_BLOCK_MULTIPLIER, multiplier),
       7200000
-    ); 
+    );
   };
 
   const blockAttempts = () => {
@@ -125,7 +122,7 @@ function Cadastro() {
 
   const verifyAdminToken = async (token) => {
     try {
-      const clientInfo = {
+      const requestBody = {
         adminCode: token,
         timestamp: new Date().getTime(),
         sessionDuration: new Date().getTime() - sessionStartTime,
@@ -140,28 +137,26 @@ function Cadastro() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(clientInfo),
+        body: JSON.stringify(requestBody),
       });
 
       const data = await response.json();
 
-      if (response.ok) {
+      if (response.ok && data.valid === true) {
         return true;
       } else {
-        console.error("Token inválido:", data.message);
         return false;
       }
-    } catch (error) {
-      console.error("Erro ao verificar token:", error);
 
-      const validTokens = ["ADMIN2024", "MASTER123", "TOKEN_SECRETO"];
-      return validTokens.includes(token);
+    } catch (error) {
+      console.error("Erro na verificação do token:", error);
+      return false;
     }
   };
 
   const handleTokenSubmit = async (e) => {
     e.preventDefault();
-    updateActivity(); 
+    updateActivity();
 
     if (isBlocked) {
       setTokenError(
@@ -178,7 +173,7 @@ function Cadastro() {
     setIsVerifyingToken(true);
     setTokenError("");
 
-    const isValid = await verifyAdminToken(adminCode);
+    const isValid = await verifyAdminToken(adminCode.trim());
 
     if (isValid) {
       setTokenVerified(true);
@@ -191,7 +186,8 @@ function Cadastro() {
 
       if (newAttemptCount >= MAX_ATTEMPTS) {
         blockAttempts();
-        setAdminCode(""); 
+        setAdminCode("");
+      } else {
         const remaining = MAX_ATTEMPTS - newAttemptCount;
         setTokenError(
           `Código inválido. ${remaining} tentativa${
@@ -223,10 +219,11 @@ function Cadastro() {
 
     const formDataWithToken = {
       ...formData,
-      adminCode: adminCode, 
+      adminCode: adminCode.trim(),
     };
 
     const success = await submitRegistration(formDataWithToken, setErrors);
+    
     if (success) {
       setStep(3);
       setTimeout(() => navigate("/login"), 3000);
@@ -300,6 +297,7 @@ function Cadastro() {
                   </div>
                 </div>
               )}
+              
               {!isBlocked && attemptCount > 0 && (
                 <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
                   <div className="flex items-center justify-between">

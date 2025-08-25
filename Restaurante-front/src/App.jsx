@@ -55,12 +55,10 @@ function AppContent() {
 
     const handlePopupMessage = (event) => {
       if (event.data?.type === "LOGIN_SUCCESS") {
-        const { user: userData, token } = event.data;
-        if (userData && token) {
-          authService.setUser(userData, false);
-          authService.setToken(token, false);
+        
+        setTimeout(() => {
           updateAuthState();
-        }
+        }, 100);
       }
     };
 
@@ -92,7 +90,8 @@ function AppContent() {
       } else {
         clearAuthData();
       }
-    } catch {
+    } catch (error) {
+      console.error("Erro em updateAuthState:", error);
       clearAuthData();
     }
   };
@@ -112,7 +111,8 @@ function AppContent() {
       } else {
         clearAuthData();
       }
-    } catch {
+    } catch (error) {
+      console.error("Erro na inicialização:", error);
       clearAuthData();
     } finally {
       setLoading(false);
@@ -127,12 +127,11 @@ function AppContent() {
 
   const handleLogin = (userData, token, remember = false) => {
     try {
-      authService.setToken(token, remember);
-      authService.setUser(userData, remember);
+      authService.clearUserData();
 
-      const storage = remember ? localStorage : sessionStorage;
-      storage.setItem("isAuthenticated", "true");
-      storage.setItem("loginTimestamp", Date.now().toString());
+      authService.setUser(userData, remember);
+      authService.setToken(token, remember);
+      authService.setAdditionalData(userData.email, remember);
 
       setUser(userData);
       setIsAuthenticated(true);
@@ -145,7 +144,8 @@ function AppContent() {
       );
 
       return true;
-    } catch {
+    } catch (error) {
+      console.error("Erro no handleLogin:", error);
       return false;
     }
   };
@@ -158,7 +158,8 @@ function AppContent() {
         window.dispatchEvent(new CustomEvent("userLoggedOut"));
       }, 50);
       navigate("/", { replace: true });
-    } catch {
+    } catch (error) {
+      console.error("Erro no handleLogout:", error);
       clearAuthData();
       navigate("/", { replace: true });
     }

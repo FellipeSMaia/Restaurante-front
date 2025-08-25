@@ -61,7 +61,16 @@ const LoginButton = ({
     (data) => {
       try {
         const { user, token, rememberMe } = data;
+
         if (!token) throw new Error("Token não fornecido");
+
+        const currentToken = authService.getToken();
+        const currentUser = authService.getUser();
+        const currentAuth = authService.isAuthenticated();
+
+        if (currentToken === token && currentUser && currentAuth) {
+          return true;
+        }
 
         authService.clearUserData();
         authService.setUser(user, rememberMe || false);
@@ -98,16 +107,6 @@ const LoginButton = ({
         events.forEach(({ name, detail }) => {
           window.dispatchEvent(new CustomEvent(name, { detail }));
         });
-
-        const storage = data.rememberMe ? localStorage : sessionStorage;
-        window.dispatchEvent(
-          new StorageEvent("storage", {
-            key: "isAuthenticated",
-            newValue: "true",
-            oldValue: "false",
-            storageArea: storage,
-          })
-        );
       } catch (error) {
         logError("Erro ao disparar eventos:", error);
       }
@@ -145,13 +144,15 @@ const LoginButton = ({
           return;
         }
 
-        const saved = saveToStorage({ user, token, rememberMe });
+        const loginData = { user, token, rememberMe: Boolean(rememberMe) };
+
+        const saved = saveToStorage(loginData);
         if (!saved) {
           onLoginError({ error: "Erro ao salvar dados de autenticação" });
           return;
         }
 
-        dispatchLoginEvents({ user, token, rememberMe });
+        dispatchLoginEvents(loginData);
 
         if (popupRef.current) {
           try {
@@ -162,7 +163,7 @@ const LoginButton = ({
           popupRef.current = null;
         }
 
-        onLoginSuccess(event.data);
+        onLoginSuccess(loginData);
       } else if (type === "LOGIN_ERROR") {
         logError("Erro no login:", event.data);
         onLoginError(event.data);

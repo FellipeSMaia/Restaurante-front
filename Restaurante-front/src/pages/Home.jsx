@@ -1,79 +1,25 @@
-import React, { useState, useRef, useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import { Img } from "react-image";
 import Layout from "../components/layout/layout";
+import BackgroundImagens from "../components/backgroundImagens/BackgroundImagens.jsx";
 
 function Home() {
-  const [isVisible, setIsVisible] = useState(false);
-  const containerRef = useRef();
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (containerRef.current) {
-      observer.observe(containerRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
-  const LoadingPlaceholder = () => (
-    <div className="absolute inset-0 bg-gradient-to-br from-orange-100 via-orange-200 to-orange-300 animate-pulse">
-      <div className="flex items-center justify-center h-full">
-        <div className="flex flex-col items-center space-y-4">
-          <div className="w-16 h-16 border-4 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
-          <div className="text-orange-600 text-lg font-semibold">
-            Carregando...
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-
-  const ErrorFallback = () => (
-    <div className="absolute inset-0 bg-gradient-to-br from-orange-100 via-orange-200 to-orange-300">
-      <div className="flex items-center justify-center h-full">
-        <div className="text-center">
-          <div className="text-6xl mb-4">🍽️</div>
-          <div className="text-orange-600 text-lg font-semibold">
-            Sem imagem disponível
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-
-  const BackgroundImage = () =>
-    isVisible && (
-      <Img
-        src={[
-          "./imagens/img_home/foto-home.webp",
-          "./imagens/img_home/foto-home.jpg",
-        ]}
-        alt="Interior do Restaurante X"
-        loading="lazy"
-        loader={<LoadingPlaceholder />}
-        unloader={<ErrorFallback />}
-        className="absolute inset-0 w-full h-full object-cover object-center"
-      />
-    );
-
   return (
     <Layout>
-      <div
-        ref={containerRef}
-        className="relative min-h-screen w-full bg-gray-200"
-      >
-        <BackgroundImage />
+      <div className="relative min-h-screen w-full bg-gray-200">
+        <div className="absolute inset-0 z-0">
+          <BackgroundImagens
+            webpSrc="/imagens/img_home/foto-home.webp"
+            fallbackSrc="/imagens/img_home/foto-home.jpg"
+            alt="Interior do Restaurante X"
+            className="absolute inset-0 w-full h-full object-cover object-center"
+            preload={true}
+          />
+        </div>
 
-        <div className="relative z-10 flex flex-col md:flex-row items-center justify-start gap-10 container mx-auto w-full flex-grow px-4 sm:px-6 lg:px-8 py-12 min-h-screen">
+        <div className="absolute inset-0 bg-black/30 z-10"></div>
+
+        <div className="relative z-20 flex flex-col md:flex-row items-center justify-start gap-10 container mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 min-h-screen">
           <div className="max-w-md text-center md:text-left md:ml-10 lg:ml-20">
             <h1 className="text-orange-600 text-4xl md:text-5xl font-extrabold mb-4 drop-shadow-lg">
               Restaurante X
